@@ -1,24 +1,19 @@
 const createError = require('http-errors');
-
 const express =require("express");
 const app=express();
 const path = require('path');
-
 const jwt = require('jsonwebtoken');
 const db=require("./models");
 const {User}=require("./models");
 const dotenv = require('dotenv');
 const bcrypt=require('bcrypt');
 dotenv.config();
-
 app.use(express.static(path.resolve(__dirname,'../fitness-frontend/build')));
-
 app.use(express.json()) // for parsing application/json
 app.use(express.urlencoded({ extended: true })) 
 app.get('*', function(request, response) {
   response.sendFile(path.resolve(__dirname, '../fitness-frontend/build', 'index.html'));
 });
-
 app.get("/" ,(req,res)=>{
     res.send("Hello World")
 });
@@ -28,7 +23,6 @@ app.get("/one/:id", function (req, res, next) {
       .find({where: {id: id}})
       .then(user => res.render("specificUser", {user: user}));
 });
-
 app.get("/signup", (req,res)=>{
 res.send("users")
 });
@@ -48,8 +42,6 @@ app.post("/signup", async(req, res)=>{
 });
 res.send("signup");
 });
-
-
 app.post('/login',async(req,res,next)=>{
  const user = await User.findOne({ where : {email : req.body.email }});
  if(user){
